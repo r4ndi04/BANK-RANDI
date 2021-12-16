@@ -49,6 +49,29 @@ namespace NASABAH.Controllers
             return Ok(y);
         }
 
+        public IHttpActionResult GetAllNasabah()
+        {
+            List<NasabahModel> nasabah = null;
+            using (var db = new DBNASABAHEntities())
+            {
+                nasabah = db.tblNasabahs.Select(x => new NasabahModel()
+                {
+                    NO_KTP = x.NO_KTP,
+                    NAMA_LGKP = x.NAMA_LGKP,
+                    ALAMAT = x.ALAMAT,
+                    TMPT_LAHIR = x.TMPT_LAHIR,
+                    TGL_LAHIR = x.TGL_LAHIR,
+                    NO_HP = x.NO_HP
+                }).ToList<NasabahModel>();
+            }
+            if (nasabah.Count == 0)
+            {
+                return NotFound();
+            }
+
+            return Ok(nasabah);
+        }
+
         public IHttpActionResult Put(NasabahModel nasabah)
         {
             if (!ModelState.IsValid)
